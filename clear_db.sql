@@ -1,4 +1,0 @@
-SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE card_transactions ;
-TRUNCATE users ;
-DROP TABLE IF EXISTS users;

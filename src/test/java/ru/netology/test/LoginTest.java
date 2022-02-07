@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class LoginTest {
 
     @Test
-    void shouldTransferMoneyFromFirstCardToSecond() {
+    void shouldLoginSuccessfully() {
         open("http://localhost:9999");
         LoginPage loginPage = new LoginPage();
 

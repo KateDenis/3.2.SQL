@@ -8,7 +8,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-//import ru.netology.mode.User;
+//import ru.netology.User;
 
 import java.sql.DriverManager;
 
@@ -39,7 +39,7 @@ public class DbInteractionDbUtils {
 
         try (
                 var conn = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/ap-dbp", "app", "YES"
+                        "jdbc:mysql://localhost:3306/app-db", "app", "YES"
                 );
         ) {
             String code = runner.query(conn, codeSQL, new ScalarHandler<>()).toString();

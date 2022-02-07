@@ -19,10 +19,9 @@ public class DataHelper {
     public static String getCodeByUser(User user) {
         var codeSQL = "SELECT code FROM auth_codes WHERE user_id = ? ORDER BY created DESC LIMIT 1;";
         var runner = new QueryRunner();
-
         try (
                 var conn = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/ap-dbp", "app", "YES"
+                        "jdbc:mysql://localhost:3306/app-db", "app", "YES"
                 );
         ) {
             var dataStmt = conn.prepareStatement(codeSQL);
@@ -33,17 +32,6 @@ public class DataHelper {
                 rs.first();
                 code = rs.getString("code");
             }
-
-//            try (var rs = cardsStmt.executeQuery()) {
-//                while (rs.next()) {
-//                    var id = rs.getInt("id");
-//                    var number = rs.getString("number");
-//                    var balanceInKopecks = rs.getInt("balance_in_kopecks");
-//                    // TODO: сложить всё в список
-//                    System.out.println(id + " " + number + " " + balanceInKopecks);
-//                }
-//            }
-
             return code;
         }
     }
