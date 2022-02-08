@@ -2,14 +2,9 @@ package ru.netology.data;
 
 import lombok.SneakyThrows;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
-import lombok.SneakyThrows;
 import lombok.Value;
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.DriverManager;
-
 
 public class DataHelper {
     private DataHelper() {
@@ -27,10 +22,12 @@ public class DataHelper {
             var dataStmt = conn.prepareStatement(codeSQL);
             dataStmt.setString(1, user.getId());
 
-            String code;
+            String code = "";
             try (var rs = dataStmt.executeQuery()) {
-                rs.first();
-                code = rs.getString("code");
+                if (rs.next()) {
+                    code = rs.getString("code");
+
+                }
             }
             return code;
         }
@@ -56,6 +53,14 @@ public class DataHelper {
                 "bfb439cd-3b78-43f7-aeb2-5fdabddf1a85",
                 "petya",
                 "123qwerty"
+        );
+    }
+
+    public static User getPetyaInvalid() {
+        return new User(
+                "bfb439cd-3b78-43f7-aeb2-5fdabddf1a85",
+                "petya",
+                "123qwerty12"
         );
     }
 }
