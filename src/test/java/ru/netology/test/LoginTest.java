@@ -17,8 +17,10 @@ class LoginTest {
         LoginPage loginPage = new LoginPage();
         var user = DataHelper.getVasya();
         var verificationPage = loginPage.validLogin(user);
-        String verificationCode = DataHelper.getCodeByUser(user);
+        String verificationCode;
+        verificationCode = DataHelper.getCodeByUser(user);
         DashboardPage dashboardPage = verificationPage.validVerify(verificationCode);
+        assertEquals("Личный кабинет", dashboardPage.getHeading());
     }
 
     @Test
@@ -35,9 +37,7 @@ class LoginTest {
         open("http://localhost:9999");
         LoginPage loginPage = new LoginPage();
         var user = DataHelper.getPetyaInvalid();
-        for (int i = 0; i < 3; i++) {
-            loginPage = loginPage.invalidLogin(user);
-        }
+        loginPage = loginPage.multipleLogin(user);
         var newUser = DataHelper.getPetya();
         var verificationPage = loginPage.validLogin(newUser);
         assertEquals("Ошибка! Превышено количество попыток входа", loginPage.getInvalidLoginNotification());

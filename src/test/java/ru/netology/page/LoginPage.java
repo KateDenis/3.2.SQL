@@ -19,6 +19,15 @@ public class LoginPage {
         return new LoginPage();
     }
 
+    public LoginPage multipleLogin(DataHelper.User user) {
+        this.auth(user);
+        LoginPage loginPage = new LoginPage();
+        for (int i = 0; i < 3; i++) {
+            loginPage = loginPage.invalidLogin(user);
+        }
+        return loginPage;
+    }
+
     public void auth(DataHelper.User user) {
         $("[data-test-id=login] input")
                 .doubleClick().shouldBe(visible, Duration.ofMillis(15000)).sendKeys(Keys.BACK_SPACE);

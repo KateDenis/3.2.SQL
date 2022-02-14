@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.dbutils.QueryRunner;
 import lombok.Value;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DataHelper {
@@ -11,13 +12,18 @@ public class DataHelper {
     }
 
     @SneakyThrows
+    private static Connection getConnection() {
+        return DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/app-db", "app", "YES"
+        );
+    }
+
+    @SneakyThrows
     public static String getCodeByUser(User user) {
         var codeSQL = "SELECT code FROM auth_codes WHERE user_id = ? ORDER BY created DESC LIMIT 1;";
         var runner = new QueryRunner();
         try (
-                var conn = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/app-db", "app", "YES"
-                );
+                var conn = getConnection();
         ) {
             var dataStmt = conn.prepareStatement(codeSQL);
             dataStmt.setString(1, user.getId());
@@ -33,6 +39,27 @@ public class DataHelper {
         }
     }
 
+    @SneakyThrows
+    public static String getUserIdByLogin(String login) {
+        var codeSQL = "SELECT id FROM users WHERE login = ? LIMIT 1;";
+        var runner = new QueryRunner();
+        try (
+                var conn = getConnection();
+        ) {
+            var dataStmt = conn.prepareStatement(codeSQL);
+            dataStmt.setString(1, login);
+
+            String id = "";
+            try (var rs = dataStmt.executeQuery()) {
+                if (rs.next()) {
+                    id = rs.getString("id");
+
+                }
+            }
+            return id;
+        }
+    }
+
     @Value
     public static class User {
         private String id;
@@ -41,25 +68,31 @@ public class DataHelper {
     }
 
     public static User getVasya() {
+        String login = "vasya";
+
         return new User(
-                "4130ac72-c7ba-4a3f-9d91-30b08f28e1ec",
-                "vasya",
+                getUserIdByLogin(login),
+                login,
                 "qwerty123"
         );
     }
 
     public static User getPetya() {
+        String login = "petya";
+
         return new User(
-                "bfb439cd-3b78-43f7-aeb2-5fdabddf1a85",
-                "petya",
+                getUserIdByLogin(login),
+                login,
                 "123qwerty"
         );
     }
 
     public static User getPetyaInvalid() {
+        String login = "petya";
+
         return new User(
-                "bfb439cd-3b78-43f7-aeb2-5fdabddf1a85",
-                "petya",
+                getUserIdByLogin(login),
+                login,
                 "123qwerty12"
         );
     }
