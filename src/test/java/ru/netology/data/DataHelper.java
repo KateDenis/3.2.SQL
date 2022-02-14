@@ -99,8 +99,6 @@ public class DataHelper {
 
     @SneakyThrows
     public static void clearDB() {
-        var codeSQL = "SELECT id FROM users WHERE login = ? LIMIT 1;";
-        var runner = new QueryRunner();
         try (
                 var conn = getConnection();
         ) {
