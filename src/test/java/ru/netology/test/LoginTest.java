@@ -1,5 +1,6 @@
 package ru.netology.test;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataHelper;
 import ru.netology.page.DashboardPage;
@@ -41,6 +42,11 @@ class LoginTest {
         var newUser = DataHelper.getPetya();
         var verificationPage = loginPage.validLogin(newUser);
         assertEquals("Ошибка! Превышено количество попыток входа", loginPage.getInvalidLoginNotification());
+    }
+
+    @AfterAll
+    static void cleanDB() {
+        DataHelper.clearDB();
     }
 }
 

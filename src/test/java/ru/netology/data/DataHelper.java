@@ -96,4 +96,24 @@ public class DataHelper {
                 "123qwerty12"
         );
     }
+
+    @SneakyThrows
+    public static void clearDB() {
+        var codeSQL = "SELECT id FROM users WHERE login = ? LIMIT 1;";
+        var runner = new QueryRunner();
+        try (
+                var conn = getConnection();
+        ) {
+            var dataStmt = conn.prepareStatement("SET FOREIGN_KEY_CHECKS = 0;");
+            dataStmt.executeUpdate();
+            dataStmt = conn.prepareStatement("TRUNCATE card_transactions ;");
+            dataStmt.executeUpdate();
+            dataStmt = conn.prepareStatement("TRUNCATE users ;");
+            dataStmt.executeUpdate();
+            dataStmt = conn.prepareStatement("TRUNCATE cards ;");
+            dataStmt.executeUpdate();
+            dataStmt = conn.prepareStatement("TRUNCATE auth_codes ;");
+            dataStmt.executeUpdate();
+        }
+    }
 }
